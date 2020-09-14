@@ -1,0 +1,11 @@
+Simple binary program to exploit.
+
+TRIALS
+I tried with strings to print the printable characters but no results.
+Then I used ltrace to trace the execution of the executable. Thanks to this program, a strcmp can be spotted, revealing the second term of comparison. This string is the password promped by the program.
+
+SOLUTION
+ltrace
+
+FLAG
+aesebootiv

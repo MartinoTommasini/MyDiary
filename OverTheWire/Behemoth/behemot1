@@ -1,0 +1,14 @@
+Binary program to exploit. The program ask for a password to insert.
+
+TRIALS
+I tried with strings to print the printable characters but no results.
+Then I used ltrace to trace the execution of the executable. I see that there is a gets -> could be a vulnerability.
+With large inputs the program exit with a segmentation fault. Buffer overflow?
+Definitely a buffer overflow: 71 chars of padding and the following 4 bytes can overwrite the return address eip.
+ I think I should make the return address point to a shellcode, injected in the 71 characters of padding. 
+Always using gdb I try to look at the content of the stack, to see where my padding is stored.
+
+
+SOLUTION
+
+FLAG
