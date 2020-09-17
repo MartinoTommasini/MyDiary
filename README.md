@@ -1,1 +1,1 @@
-Just a repository where I can keep my ctf progresses and writeups
+Just a repository where I can keep my ctf progress and writeups
