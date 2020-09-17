@@ -5,8 +5,12 @@ I tried with strings to print the printable characters but no results.
 Then I used ltrace to trace the execution of the executable. I see that there is a gets -> could be a vulnerability.
 With large inputs the program exit with a segmentation fault. Buffer overflow?
 Definitely a buffer overflow: 71 chars of padding and the following 4 bytes can overwrite the return address eip.
- I think I should make the return address point to a shellcode, injected in the 71 characters of padding. 
+ I think I should make the return address point to a shellcode, injected in the 71 characters of padding. The byte 72 will start to overwrite the eip register. Next step is inject a shellcode in the padding and make the eip point to the address of the shellcode. I found the address of the shellcode but I couldn't make it work. I tried with different shellcodes but same result.
+To find the right shellcode we need to know which is the system architecture: uname -a .
+
 Always using gdb I try to look at the content of the stack, to see where my padding is stored.
+
+
 
 
 SOLUTION
