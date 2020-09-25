@@ -1,0 +1,58 @@
+Desc:- Wow you are so special.
+
+N=0x3b7c97ceb5f01f8d2095578d561cad0f22bf0e9c94eb35a9c41028247a201a6db95f
+e=0x10001
+ct=0x1B5358AD42B79E0471A9A8C84F5F8B947BA9CB996FA37B044F81E400F883A309B886
+
+
+
+
+MY SOLUTION:
+
+Given the name of the variable I thought the challange was related to RSA.
+We have the publik key N, the exponent e and the chipertext c, we want to find the message m.
+
+Since I don't have any special hint, i try to factor N, in order to find the primes p and q.
+I use Pari-gp with the command: factor(N)
+
+Eventually:
+p=31415926535897932384626433832795028841
+q=56129192858827520816193436882886842322337671
+
+I can now compute the private key d as:
+d=e^{-1} mod((p-1)(q-1)
+d=188047321955721375508157638187334651345661324123156155999468187676652730213105073
+
+I can compute the message m as:
+m=c^d modN
+Since I couldn't compute c^d directly (too large numbers), I used the square and multiply technique, reducing the intermediate result modulo N for each step. Here the code used:
+
+------------------------------------------
+def exp_func(x, y, N):
+    exp = bin(y)
+    value = x
+ 
+    for i in range(3, len(exp)):
+        value = (value * value) % N
+        print (i)
+        if(exp[i:i+1]=='1'):
+            value = (value*x) % N
+	    print (i)
+    return value
+N=1763350599372172240188600248087473321738860115540927328389207609428163138985769311
+c=810005773870709891389047844710609951449521418582816465831855191640857602960242822
+d=188047321955721375508157638187334651345661324123156155999468187676652730213105073
+
+print(exp_func(c,d,N)==c)
+------------------------------------------
+
+So:
+m=177357260603510007903211978293167625652027411836388457692827332910803940221
+
+Finally I got the plaintext m
+>>print(hex(m)[2:-1].decode("hex"))
+
+FLAG:
+darkCTF{4v0iD_us1ngg_p1_pr1mes}
+
+
