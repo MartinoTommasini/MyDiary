@@ -1,0 +1,31 @@
+They give you a page link and the source code of the page where you can see the php code used.
+
+
+This was part of the code:
+
+<?php
+$web = $_SERVER['HTTP_USER_AGENT'];
+if (is_numeric($web)){
+      if (strlen($web) < 4){
+          if ($web > 10000){
+                 echo ('<div class="w3-panel w3-green"><h3>Correct</h3>
+  <p>darkCTF{}</p></div>');
+          } else {
+                 echo ('<div class="w3-panel w3-red"><h3>Wrong!</h3>
+  <p>Ohhhhh!!! Very Close  </p></div>');
+          }
+      } else {
+             echo ('<div class="w3-panel w3-red"><h3>Wrong!</h3>
+  <p>Nice!!! Near But Far</p></div>');
+      }
+} else {
+    echo ('<div class="w3-panel w3-red"><h3>Wrong!</h3>
+  <p>Ahhhhh!!! Try Not Easy</p></div>');
+}
+
+
+The string 9e9 is considered as an exponential by the is_numeric() function, returning true.
+The length of the string is < 4 and the value of 9^9 is > than 10000.
+Therefore we got the flag.
+
+
