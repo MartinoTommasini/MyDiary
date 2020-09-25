@@ -1,0 +1,12 @@
+Description: ssh wolfie@linuxstarter.darkarmy.xyz -p 8001 password : wolfie
+find the flag
+
+
+
+I connected through ssh to the user, port and address above:
+ssh wolfie@linuxstarter.darkarmy.xyz -p 8001 password : wolfie
+
+You are not allowed to use ls command to list the files. So I search the available commands with "help".
+Since cd is an accessible command, I used it to discover the content of the filesystem (using TAB and autocompletion). 
+Eventually, I found the flag in imp/flag.txt. I displayed the flag using:
+cat imp/flag.txt
