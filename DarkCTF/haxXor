@@ -5,3 +5,12 @@ Given the string 5552415c2b3525105a4657071b3e0b5f494b034515  , find the flag.
 TRIALS
 Tried to see if it was the encoding of base32 or base62 but no.
 Trying to google the title of the challange, "haxXor". I found something that can be interesting: the leet language. haxor is the translation of hacker in leet. So, i tried to decrypt the string using a leet decryptor but no results.
+
+Couldn't make it.
+
+SOLUTION
+use of xor
+
+"".join(chr(ord(x)^ord(y)) for x, y in zip(bytes.fromhex("5552415c2b3525105a4657071b3e0b5f494b034515").decode("latin-1"), "darkCTF{"*100))
+
+"".join(chr(ord(x)^ord(y)) for x, y in zip(bytes.fromhex("5552415c2b3525105a4657071b3e0b5f494b034515").decode("latin-1"), "1337hack"*100))
