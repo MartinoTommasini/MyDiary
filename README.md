@@ -1,1 +1,1 @@
-Just a repository where I can keep my ctf progress and writeups
+A collection of writeups and scripts of CTF challenges. 
