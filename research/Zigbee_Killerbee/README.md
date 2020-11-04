@@ -17,5 +17,5 @@ Content of the research:
 - General introduction to KillerBee and compatible devices
 - Implementation of the proposed solution
 
-The research is entirely written in Italian :) 
-Working on a English translation soon.
+The research is entirely written in Italian :)
+Working on an English translation soon.
