@@ -46,7 +46,7 @@ supernootnoot
 The content of user.txt is supernootnoot.
 
 Final step is to find the file root.txt. The name of the file suggests that the flag is only available under root.  
-We download LinEnum, useful tool which scans the system to find ways to escalate the privileges. In the scan report, we see the following:
+We download LinEnum (https://github.com/rebootuser/LinEnum), useful tool which scans the system to find ways to escalate the privileges. In the scan report, we see the following:
 ```shell
 [+] We can sudo without supplying a password!                                                                     
 Matching Defaults entries for nyan on ubuntu:                                                                     
