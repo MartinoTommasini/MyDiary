@@ -2,7 +2,7 @@
 Solve the final exam of the CC:Pen-Testing box in TryHackMe.  
 The goal is to exploit the target machine and get the content of user.txt and root.txt.
 
-## Solution
+## Writeup
 ip of the target host: 10.10.193.79
 
 Reconnaissance: scan the target machine to enumerate ports and services.
