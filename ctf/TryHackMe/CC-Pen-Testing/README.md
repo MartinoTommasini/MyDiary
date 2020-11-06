@@ -1,4 +1,4 @@
-## Description
+# CC:Pen-Testing
 Solve the final exam of the CC:Pen-Testing box in TryHackMe.  
 The goal is to exploit the target machine and get the content of user.txt and root.txt.
 
