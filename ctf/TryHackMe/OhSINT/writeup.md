@@ -1,4 +1,4 @@
-#OhSINT
+# OhSINT
 
 What information can you possible get with just one photo ?
 
@@ -7,11 +7,12 @@ What information can you possible get with just one photo ?
 ## Solution
 
 We can use exiftool to read the metadata info in the picture.  
-If not already installed 
+If not already installed:
 ```
 sudo apt install libimage-exiftool-perl
 ```
 
+Execution of exiftool
 ```
 > exiftool WindowsXP.jpg
 ExifTool Version Number         : 12.09
@@ -41,15 +42,15 @@ GPS Latitude Ref                : North
 GPS Longitude Ref               : West
 GPS Position                    : 54 deg 17' 41.27" N, 2 deg 15' 1.33" W
 ```
-We can extract the author of the picture from the Copyright tag.
+We can extract the author of the picture from the Copyright tag.  
 From a gooogle search we find the avatar of Owoodflint's twitter account -> a cat :)
 
 
 Using google maps and the GPS coordinates we have, we see that the location is close to a city named Hawes. 
 However, it's not the correct one, since TryHackMe doesn't accept the solution.
 
-Again,with a simple google search we can find the email address and city in his [github repo](https://github.com/OWoodfl1nt/people_finder/blob/master/README.md):
-OWoodflint@gmail.com
+Again,with a simple google search we can find the email address and the city in his [github repo](https://github.com/OWoodfl1nt/people_finder/blob/master/README.md):  
+OWoodflint@gmail.com  
 London
 
 Alternatively, we can use Wingle.net to find the Location. The author posted the BSSID of his access point on twitter ( B4:5D:50:AA:86:41 ). Feeding the BSSID as input we get the location and the SSID of the access point.
@@ -59,7 +60,7 @@ In his [blog](https://oliverwoodflint.wordpress.com/2019/03/03/the-journey-begin
 I tried to send an email to his address, hoping for an automatic reply I could analyze to get his ip address. No automatic responce received though.
 
 As last thing, we need to find his password. *Have I been Pwned*  does not identify any breach linked with his mail account.  
-I took some time to understand that the password was embedded in one of the previous links. In the source code of the Blog page, we see the password. It had the same color of background.
+I didn't nothis this in the first place but some the password is embedded in one of the previous links. In the source code of the Blog page, we see the password. It had the same color of background.
 ```html
 <p style="color:#ffffff;" class="has-text-color" data-adtags-visited="true">pennYDr0pper.!</p>
 ```
