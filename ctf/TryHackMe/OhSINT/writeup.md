@@ -57,8 +57,6 @@ Alternatively, we can use Wingle.net to find the Location. The author posted the
 
 In his [blog](https://oliverwoodflint.wordpress.com/2019/03/03/the-journey-begins/)  we discover that he has been in New York for the holidays
 
-I tried to send an email to his address, hoping for an automatic reply I could analyze to get his ip address. No automatic responce received though.
-
 As last thing, we need to find his password. *Have I been Pwned*  does not identify any breach linked with his mail account.  
 I didn't nothis this in the first place but some the password is embedded in one of the previous links. In the source code of the Blog page, we see the password. It had the same color of background.
 ```html
