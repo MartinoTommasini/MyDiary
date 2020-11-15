@@ -44,3 +44,8 @@ https://www.theprohack.com/2010/07/advanced-password-hacking-using-google.html
 https://wigle.net/
 Detect and locate networks, identify SSID through BSSID, discover free useable networks and much more ...
 
+* Maltego
+
+* The harvester
+
+* FOCA
