@@ -1,6 +1,7 @@
 #!/usr/bin/env sage
 import sys, requests, re, hashlib
 from sage.all import factor
+import random, string
 
 hashlen = 5
 
@@ -36,31 +37,14 @@ def forgery(m, s):  # use this to submit your forgery once you've created it
 print('public key: {}'.format((n,e)))
 
 # Find messages that factor in the factor base 
-factor_base= 10000
-voc = "abcdefghijklmnopqrstuvwyz1234567890;:+*+"
-base=""
+factor_base= 30
 cont=0
 
-for a in voc:
-    for x in voc:
-        message = base + x
-        # compute sha
-        hashed = sha(message)
-        if factor(hashed)[-1][0] <= factor_base:
-            print(message)
-            print(cont)
-            print(hashed)
-            print(factor(hashed))
-            cont += 1
-            print("-"*20)
+while True:
+    message =  ''.join(random.choice(string.ascii_letters) for _ in range(13) )
+    hashed=sha(message)
+    if factor(hashed)[-1][0] <= factor_base:
+        print(message)
+        cont += 1
 
-        # check if factoror of hash is smooth
-        # if yes, save in a list.
-        
-        #exit program when (primes in factor base) + 1 hashes are found
-    base = base + a
-        
-    
-#sig = sign(msg)
-#print('signature: {}'.format(sig))
-#print('is valid? {}'.format(validate(msg, sig)))
+# run the script till you need

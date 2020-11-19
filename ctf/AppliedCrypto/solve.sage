@@ -1,9 +1,11 @@
-#!/usr/bin/env sage
+#!/usr/bin/env sage 
+
 import sys, requests, re, hashlib
-from sage.all import factor
+
+from sage.all import *
+from collections import OrderedDict
 
 hashlen = 5
-factor_base = 2**30
 
 url, auth = 'http://131.155.21.174:8081', ('', 'ilovecrypto')
 sid, token = 1608584, '9c593b9cff2bb86750728edca1d4e203b20ee451'
@@ -23,32 +25,95 @@ def sign(m):
     return int(r.text)
 
 def validate(m, s):
+    #print("sha")
+    #print(sha(m))
+    #print("hash of m")
+    #print(pow(s,e,n))
     return pow(s, e, n) == sha(m)
 
 def forgery(m, s):  # use this to submit your forgery once you've created it
     assert validate(m, s)
-    r = req.post(url+'/validate_forgery', auth=auth, data={'msg': m, 'sig': str(s)})
-    print('\x1b[32m{}\x1b[0m'.format(r.text.strip()))
+    #r = req.post(url+'/validate_forgery', auth=auth, data={'msg': m, 'sig': str(s)})
+    #print('\x1b[32m{}\x1b[0m'.format(r.text.strip()))
 
 ################################################################
 
-print('public key: {}'.format((n,e)))
+def hash_and_normalize(message):
+    hashed = sha(message)
+    factors = OrderedDict(factor(hashed))
+    return  [ factors[p] if p in factors else 0 for p in primes]
 
-# let's sign a message and verify the signature
-msg = ["a", "Hi","c","e","f" ,"y","l"]
-msg1 = ["Hi! Just trying this.", "Hi","Hello","How are u","This is my password","yes","I know bob"]
 
-print('message: {}'.format(repr(msg)))
-for x in msg:
-    val = sha(x)
-    print("hash: {}".format(val))
-    print(factor(val))
-    print("-"*20)
+def square_multiply(x, y, N):
+    exp = bin(y)
+    value = x
+ 
+    for i in range(3, len(exp)):
+        value = (value * value) % N
+        if(exp[i:i+1]=='1'):
+            value = (value*x) % N
+    return value
     
-#print('hash value: {}'.format(val))
-
-#sig = sign(msg)
-#print('signature: {}'.format(sig))
-#print('is valid? {}'.format(validate(msg, sig)))
 
 
+
+
+factor_base=30
+num_primes = 10 # number of primes in the factor base
+m_to_sign = 'twIipROLHkJWL' # message we forge the signature for. 
+
+primes = [2,3,5,7,11,13,17,19,23,29]
+
+messages = [ 
+        'wolOymtxcWggn',
+        'ZxwlfbFIXneow',
+        'zzlLWRpoWyWzn',
+        'ZtKCYOROzJjrN',
+        'iAQuGaIolTihB',
+        'CPJaXVIYAQaqb',
+        'aDgfOqOsSKHmG',
+        'SlUgldVmvDwDm',
+        'TgxMATysVJSMn',
+        'NUtIMkOtgKnLs',
+        ]
+
+# matrix in the finite field of e elements
+M = matrix(GF(e),10,10)
+
+index=0
+for message in messages:
+    # insert vector in the matrix
+    vect = hash_and_normalize(message)
+    M[index] = vect
+    index += 1
+
+print(M)
+
+# express the hash of the message we want to forge the signature for as a vector
+vect = hash_and_normalize(m_to_sign) 
+w = vector(GF(e),vect)
+
+# we express w as a linear combination of the other vectors
+w_comb = M.solve_right(w) 
+
+tot=1
+
+# let the oracle sign the messages (expept for our target message)
+i=0
+for m in messages:
+    #temp = Mod(sign(m)**w_comb[i],n)
+    temp = square_multiply(sign(m),int(w_comb[i]),n)
+    #tot = Mod(tot*temp,n)
+    tot = Mod(tot * temp,n)
+    i += 1
+
+#for p in primes:
+#    tot = Mod(tot*p,n)
+
+
+print("message:")
+print(m_to_sign)
+print("forgery:")
+print(tot)
+
+#forgery(m_to_sign,tot)

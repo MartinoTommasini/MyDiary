@@ -1,9 +1,10 @@
-#!/usr/bin/env python3
+#! /usr/bin/env sage
+
 import sys, requests, re, hashlib
-from sympy import factorint
+from sage.all import *
+from collections import OrderedDict
 
 hashlen = 5
-factor_base = 2**30
 
 url, auth = 'http://131.155.21.174:8081', ('', 'ilovecrypto')
 sid, token = 1608584, '9c593b9cff2bb86750728edca1d4e203b20ee451'
@@ -32,22 +33,44 @@ def forgery(m, s):  # use this to submit your forgery once you've created it
 
 ################################################################
 
-print('public key: {}'.format((n,e)))
+# find linear independent vectors
 
-# let's sign a message and verify the signature
-msg = ["Hi! Just trying this.", "Hi","Hello","How are u","This is my password","yes","I know bob"]
+factor_base=30
+num_primes = 10 # number of primes in the factor base
 
-print('message: {}'.format(repr(msg)))
-for x in msg:
-    val = sha(x)
-    print("hash: {}".format(val))
-    print(factorint(val))
-    print("-"*20)
-    
-#print('hash value: {}'.format(val))
+primes = [2,3,5,7,11,13,17,19,23,29]
 
-#sig = sign(msg)
-#print('signature: {}'.format(sig))
-#print('is valid? {}'.format(validate(msg, sig)))
+messages = [ 
+        'wolOymtxcWggn',
+        'ZxwlfbFIXneow',
+        'zzlLWRpoWyWzn',
+        'ZtKCYOROzJjrN',
+        'iAQuGaIolTihB',
+        'CPJaXVIYAQaqb',
+        'aDgfOqOsSKHmG',
+        'SlUgldVmvDwDm',
+        'TgxMATysVJSMn',
+        'NUtIMkOtgKnLs',
+        ]
+# to sign twIipROLHkJWL
 
+# set the matrix with 0 values
+M = matrix(GF(e),10,10)
 
+index=0
+for message in messages:
+    hashed = sha(message)
+    factors = OrderedDict(factor(hashed))
+
+    vector = []
+    for p in primes:
+        if p in factors:
+            vector.append(factors[p])
+        else:
+            vector.append(0)
+    M[index] = vector
+    index += 1
+
+print(M)
+print("-"*10)
+print(M.echelon_form())
