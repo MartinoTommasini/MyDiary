@@ -2,13 +2,15 @@
 
 import sys, requests, re, hashlib
 
-from sage.all import *
+from sage.all import factor,Mod
 from collections import OrderedDict
+
+import sympy
 
 hashlen = 5
 
 url, auth = 'http://131.155.21.174:8081', ('', 'ilovecrypto')
-sid, token = 1608584, '9c593b9cff2bb86750728edca1d4e203b20ee451'
+sid, token = 1608584, '40e9b9c54390bacdf9e6664aeb5ae08d89969087'
 
 sha = lambda m: int(hashlib.sha256((str(sid) + m).encode()).hexdigest()[:2*hashlen],16)
 
@@ -25,10 +27,6 @@ def sign(m):
     return int(r.text)
 
 def validate(m, s):
-    #print("sha")
-    #print(sha(m))
-    #print("hash of m")
-    #print(pow(s,e,n))
     return pow(s, e, n) == sha(m)
 
 def forgery(m, s):  # use this to submit your forgery once you've created it
@@ -39,46 +37,30 @@ def forgery(m, s):  # use this to submit your forgery once you've created it
 ################################################################
 
 def hash_and_normalize(message):
+    """ return a vector of exponents in the factor base 
+        e.g.  25=5^2. 
+        returns: [0,0,2,0,0,0] """
+
     hashed = sha(message)
     factors = OrderedDict(factor(hashed))
     return  [ factors[p] if p in factors else 0 for p in primes]
 
 
-def square_multiply(x, y, N):
-    exp = bin(y)
-    value = x
- 
-    for i in range(3, len(exp)):
-        value = (value * value) % N
-        if(exp[i:i+1]=='1'):
-            value = (value*x) % N
-    return value
-    
+m_to_sign =  'UN2cbHO3Iy' # message we forge the signature for. 
 
+primes = [2,3,5,7,11,13]
 
-
-
-factor_base=30
-num_primes = 10 # number of primes in the factor base
-m_to_sign = 'twIipROLHkJWL' # message we forge the signature for. 
-
-primes = [2,3,5,7,11,13,17,19,23,29]
-
+# messages with linear independent hash over the factor base
 messages = [ 
-        'wolOymtxcWggn',
-        'ZxwlfbFIXneow',
-        'zzlLWRpoWyWzn',
-        'ZtKCYOROzJjrN',
-        'iAQuGaIolTihB',
-        'CPJaXVIYAQaqb',
-        'aDgfOqOsSKHmG',
-        'SlUgldVmvDwDm',
-        'TgxMATysVJSMn',
-        'NUtIMkOtgKnLs',
-        ]
+            'tsCbMD4ZZz',
+            'SOZ5u6GLeJ',
+            'kX375DPEFA',
+            'o7NaaXi0G3',
+            'kpv1CmXUMr',
+            'Ao9n7KR!DP',
+         ]
 
-# matrix in the finite field of e elements
-M = matrix(GF(e),10,10)
+M = matrix(6,6)
 
 index=0
 for message in messages:
@@ -87,33 +69,48 @@ for message in messages:
     M[index] = vect
     index += 1
 
+print("Message we want to forge the signature for")
+print(m_to_sign)
+print("")
+print("Matrix of hash exponents in the factor base")
 print(M)
+print("")
 
 # express the hash of the message we want to forge the signature for as a vector
 vect = hash_and_normalize(m_to_sign) 
-w = vector(GF(e),vect)
+w = vector(vect)
 
-# we express w as a linear combination of the other vectors
-w_comb = M.solve_right(w) 
+# express w as a linear combination of the other vectors.
+# take the int of the power because the result of all the expression
+# would be modulo e otherwise. 
+betas = int(pow(M.det(),-1,e)) * M.transpose().adjoint() * w
 
-tot=1
+# espress Vj as a linear combination of the other vectors. 
+# Vj mod e returns the vector vect
+Vj = M.transpose() * betas
+
+# gammas: number of times I have to subtract e to Vj in order to have w
+gammas = [ int(x / e) for x in Vj]
+# check
+assert(vector(Vj - e*vector(gammas)) == w )
 
 # let the oracle sign the messages (expept for our target message)
 i=0
+tot=1
 for m in messages:
-    #temp = Mod(sign(m)**w_comb[i],n)
-    temp = square_multiply(sign(m),int(w_comb[i]),n)
-    #tot = Mod(tot*temp,n)
+    print("Asking signature for "+m)
+    temp = pow(sign(m),betas[i],n)
     tot = Mod(tot * temp,n)
     i += 1
 
-#for p in primes:
-#    tot = Mod(tot*p,n)
+i=0
+for p in primes:
+    temp = pow(p,-gammas[i],n)
+    tot = Mod(tot*temp,n)
+    i += 1
 
-
-print("message:")
-print(m_to_sign)
+print("")
 print("forgery:")
 print(tot)
 
-#forgery(m_to_sign,tot)
+forgery(m_to_sign,tot)

@@ -5,8 +5,8 @@ import random, string
 
 hashlen = 5
 
-url, auth = 'http://131.155.21.174:8081', ('', 'ilovecrypto')
-sid, token = 1608584, '9c593b9cff2bb86750728edca1d4e203b20ee451'
+url, auth = 'url', ('', 'passwor')
+sid, token = 1111111, 'token'
 
 sha = lambda m: int(hashlib.sha256((str(sid) + m).encode()).hexdigest()[:2*hashlen],16)
 
@@ -37,14 +37,16 @@ def forgery(m, s):  # use this to submit your forgery once you've created it
 print('public key: {}'.format((n,e)))
 
 # Find messages that factor in the factor base 
-factor_base= 30
-cont=0
+factor_base= 14
+alphabet ="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&"
 
+cont=0
 while True:
-    message =  ''.join(random.choice(string.ascii_letters) for _ in range(13) )
+    message =  ''.join(random.choice(alphabet) for _ in range(13) )
     hashed=sha(message)
     if factor(hashed)[-1][0] <= factor_base:
         print(message)
         cont += 1
 
 # run the script till you need
+

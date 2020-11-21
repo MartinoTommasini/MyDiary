@@ -1,3 +1,0 @@
-23512
-V = VectorSpace(GF(e),10)
-w = V(vect)
