@@ -3,7 +3,7 @@
 Forge an RSA signature for a signature scheme with short hash.
 
 
-![challange description](https://github.com/MartinoTommasini/MyDiary/ctf/AppliedCrypto/forgeRSAsignature/challange.png)
+![challenge description](https://github.com/MartinoTommasini/MyDiary/ctf/AppliedCrypto/forgeRSAsignature/challenge.png)
 
 ## Solution
 
