@@ -7,7 +7,7 @@ Forge an RSA signature for a signature scheme with short hash.
 
 ## Solution
 
-The goal of the challange is to forge a signature for a message that has never been signed before. The attack is possible because the signature scheme uses a short hash .
+The goal of the challenge is to forge a signature for a message that has never been signed before. The attack is possible because the signature scheme uses a short hash .
 
 The attack used is a variant of the index calculus attack.
 
