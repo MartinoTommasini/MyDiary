@@ -22,3 +22,6 @@ As we can see, the number of packets received is quite balanced. However, since 
 
 We can deanonymize the criminals by identifying the people who repeatedly receive a high number of packets (e.g 80+ packets).  
 The first row in the receivers sheet reports this count.
+
+Therefore the members of the clique are:  
+14,26,37,40,47
