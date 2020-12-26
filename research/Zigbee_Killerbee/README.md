@@ -1,6 +1,6 @@
 # Introduction
 
-Two tools stand out in the security analysis of Zigbee networks: Killerbee, a professional penetration test framework known for the range of features and for its wide use, and the CC2531,a popular hardware device well known for its low price .
+Two tools stand out in the security analysis of Zigbee networks: Killerbee, a professional penetration test framework well known for the range of features and for its wide use, and the CC2531,a popular hardware device characterized by its low price .
 
 Some solutions that allow compatibility between KillerBee and CC2531 are currently available but they only support sniffing features. 
 
