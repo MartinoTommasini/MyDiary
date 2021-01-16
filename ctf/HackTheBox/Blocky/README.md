@@ -12,8 +12,6 @@ We go in the wordpress login page and try to enumerate the users using hydra. Wh
 hydra -L /usr/share/wordlists/rockyou.txt -p password 10.10.10.37 -v http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^&redirect_to=http%3A%2F%2F10.10.10.37%2Fwp-admin%2F&wp-submit=Log In&testcookie=1:invalid username'
 ```
 ---
-We see that openssh 7.2p2 is vulnerable to username enumeration. We take the script and run it. The time analysis in not reliable in my host machine. Too many false positives.
----
 We focus the attention on the profptd service. Version 1.3.5 has vulnerabilities, it allows unauthenticated users to use SITE CPFR and SITE CPTO. Metasploit offers exploit to it as well as Exploit DB. First we try to see if it is actually vulnerable:
 ```
 ftp 10.10.10.37
@@ -24,8 +22,9 @@ Surprisingly when we try to use the CPFR command we are required to be authentic
 ftp> site cpfr /etc/passwd
 530 Please login with USER and PASS
 ```
-Therefore it seems that it is not vulnerable.
----  
+Therefore it seems that it is not vulnerable.  
+
+---
 We switch our focus on the webserver.  Hydra hasn't found anything interesting. 
 
 Run nikto
