@@ -151,3 +151,5 @@ We transfer and run LinPeas and LinEnum, execute them and study the results to f
 
 Looking back at hashcat, we couldn't crack the hash. We try again to SSH into the box using root and 8YsqfCTnvxAUeduzjNSXe22, doubtfull whether We've already tried it or not (Yes we did). This time we also tried with the notch user and the same password. We had no expectations but it actually worked ... We could have solved the box at least some hours before... 
 
+We thus get the user flag. Final step is retrieving the root flag by escalating the privileges.  
+This is easy done by logging in as root (sudo -i) with the notch user password.
