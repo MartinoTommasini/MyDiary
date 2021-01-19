@@ -18,6 +18,7 @@ gobuster dir -u http://10.10.10.48 -w /usr/share/dirbuster/wordlists/directory-l
 
 One of the exposed directories is /admin. By browsing it, we access the  pihole admin interface. We thus know that the machine is a raspberry pi. We can try to log in through SSH using the default credentials (user:pi , password:raspberry).  
 It works and we have a shell. Once we are inside we check whether the user pi can use sudo on any commands.
+
 ```
 >sudo -l
 
@@ -26,6 +27,7 @@ User pi may run the following commands on localhost:
     (ALL) NOPASSWD: ALL
 ```
 We can run all the commands and no need to provide a password. Therefore:
+```
 >pi@raspberrypi:~/Desktop $ sudo -i
 root@raspberrypi:~# ls
 root.txt
