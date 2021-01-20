@@ -1,0 +1,3 @@
+# Nmap 7.91 scan initiated Tue Jan 19 13:06:37 2021 as: nmap -sV -p80 --script=http-shellshock -oN nmap-shellshock10.10.10.56
+WARNING: No targets were specified, so 0 hosts scanned.
+# Nmap done at Tue Jan 19 13:06:37 2021 -- 0 IP addresses (0 hosts up) scanned in 0.25 seconds
