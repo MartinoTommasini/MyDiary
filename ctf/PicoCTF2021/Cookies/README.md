@@ -7,7 +7,8 @@ As the name of the challenge suggests, we focus our attention on cookies.
 
 
 ```
-echo -n "eyJfZmxhc2hlcyI6W3siIHQiOlsiZGFuZ2VyIiwiVGhhdCBkb2Vzbid0IGFwcGVhciB0byBiZSBhIHZhbGlkIGNvb2tpZS4iXX1dfQ.YFcG0g.P78in9OeYQfj-5A-IkaIdy9l_a4" | base64 -d
+> echo -n "eyJfZmxhc2hlcyI6W3siIHQiOlsiZGFuZ2VyIiwiVGhhdCBkb2Vzbid0IGFwcGVhciB0byBiZSBhIHZhbGlkIGNvb2tpZS4iXX1dfQ.YFcG0g.P78in9OeYQfj-5A-IkaIdy9l_a4" | base64 -d
+
 {"_flashes":[{" t":["danger","That doesn't appear to be a valid cookie."]}]}base64: invalid input
 ```
 
