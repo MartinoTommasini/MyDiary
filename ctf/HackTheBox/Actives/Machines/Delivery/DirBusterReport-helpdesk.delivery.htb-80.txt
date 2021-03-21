@@ -1,0 +1,96 @@
+DirBuster 1.0-RC1 - Report
+http://www.owasp.org/index.php/Category:OWASP_DirBuster_Project
+Report produced on Sun Mar 07 12:45:38 CET 2021
+--------------------------------
+
+http://helpdesk.delivery.htb:80
+--------------------------------
+Directories found during testing:
+
+Dirs found with a 200 response:
+
+/
+
+Dirs found with a 403 response:
+
+/images/
+/apps/
+/assets/
+/js/
+/scp/js/
+/css/
+/includes/
+/include/
+/included/
+/includemanager/
+/includedcontent/
+
+Dirs found with a 302 response:
+
+/scp/
+/kb/
+/api/
+
+
+--------------------------------
+Files found during testing:
+
+Files found with a 301 responce:
+
+/images
+/pages
+/apps
+/assets
+/css
+/js
+/kb
+/api
+/scp
+
+Files found with a 200 responce:
+
+/index.php
+/view.php
+/open.php
+/js/jquery-3.5.1.min.js
+/account.php
+/js/jquery-ui-1.12.1.custom.min.js
+/js/osticket.js
+/js/jquery-ui-timepicker-addon.js
+/js/filedrop.field.js
+/scp/js/bootstrap-typeahead.js
+/js/redactor-plugins.js
+/js/redactor.min.js
+/js/redactor-osticket.js
+/js/select2.min.js
+/manage.php
+/captcha.php
+/bootstrap.php
+
+Files found with a 302 responce:
+
+/logo.php
+/logout.php
+/offline.php
+
+Files found with a 422 responce:
+
+/login.php
+/profile.php
+/tickets.php
+
+Files found with a 403 responce:
+
+/includes
+/includes.php
+/include
+/include.php
+/included
+/included.php
+/includemanager
+/includemanager.php
+/includedcontent
+/includedcontent.php
+
+
+--------------------------------
