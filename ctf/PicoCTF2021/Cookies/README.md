@@ -29,12 +29,12 @@ By analyzing the flow of the requests and responses we see that:
 - When a request is done to /search, a session cookie is set in the user environment and the web browser is redirected to the / page.
 - When a request with `Cookie: name=1` is performed, the web browser is redirected to a page /check and then a different page is displayed. Namely:
 
-![picture 1]("chocolate_cookie.png")
+![picture 1](chocolate_cookie.png)
 
 
 - When a request with `Cookie: name=2` is performed, a different string is displayed on the page. Namely:
 
-![picture 2]("oatmeal_cookie.png")
+![picture 2](oatmeal_cookie.png)
 
 
 By tweaking the `Cookie: name=x`, we find the flag at x=18
