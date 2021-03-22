@@ -39,5 +39,6 @@ By analyzing the flow of the requests and responses we see that:
 
 By tweaking the `Cookie: name=x`, we find the flag at x=18
 
+flag: picoCTF{3v3ry1_l0v3s_c00k135_94190c8a}
 
 
