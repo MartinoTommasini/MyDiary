@@ -26,7 +26,7 @@ and we get `This website is only for people from Sweden`
 
 We may use a vpn located in Sweden (maybe) or we can simply take a swedish ip and add the header:
 ```
-X-Forwarded-For: 11.11.111.111  (this is a fittive ip)
+X-Forwarded-For: 11.11.111.111  (this is a fake ip. Make sure the ip originates from Sweden.)
 ```
 
 The flag: picoCTF{http_h34d3rs_v3ry_c0Ol_much_w0w_0c0db339}u
