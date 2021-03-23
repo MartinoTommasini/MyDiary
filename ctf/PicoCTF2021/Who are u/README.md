@@ -40,7 +40,6 @@ User-Agent: picobrowser
 Referer: https://mercury.picoctf.net:52362
 Date: Wed, 21 Oct 2018 07:28:00 GMT
 DNT: 1
-Accept-Language: sv-SWE
-Content-Language: sv-SWE
+X-Forwarded-For: 11.11.111.111  (this is a fake ip. Make sure the ip originates from Sweden.)
 Content-Length: 2
 ```
